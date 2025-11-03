@@ -4,6 +4,7 @@ import { editImageWithGemini, getSuggestionWithGemini } from './services/geminiS
 import { ImageFile, EditOptions } from './types';
 import ImageDisplay from './components/ImageDisplay';
 import ControlPanel from './components/ControlPanel';
+import ImageModal from './components/ImageModal';
 import { Camera, MagicWand, AlertTriangle, Download } from './components/Icons';
 
 const App: React.FC = () => {
@@ -13,6 +14,7 @@ const App: React.FC = () => {
   const [isSuggesting, setIsSuggesting] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [customPrompt, setCustomPrompt] = useState('');
+  const [modalImage, setModalImage] = useState<string | null>(null);
 
   const [editOptions, setEditOptions] = useState<EditOptions>({
     style: null,
@@ -83,6 +85,10 @@ const App: React.FC = () => {
     link.click();
     document.body.removeChild(link);
   };
+  
+  const handleImageClick = (imageUrl: string) => {
+    setModalImage(imageUrl);
+  };
 
   return (
     <div className="min-h-screen bg-gray-900 text-gray-200 flex flex-col lg:flex-row font-sans">
@@ -98,6 +104,7 @@ const App: React.FC = () => {
           editedImage={editedImage}
           isLoading={isLoading}
           onUpload={handleImageUpload}
+          onImageClick={handleImageClick}
         />
         {!imageFile && (
           <div className="text-center text-gray-500 mt-8">
@@ -157,6 +164,8 @@ const App: React.FC = () => {
           </div>
         </div>
       </aside>
+      
+      {modalImage && <ImageModal imageUrl={modalImage} onClose={() => setModalImage(null)} />}
     </div>
   );
 };

@@ -24,23 +24,23 @@ export const editImageWithGemini = async (
     customPrompt: string
 ): Promise<string> => {
     
-    const promptParts: string[] = [];
+    const promptParts: string[] = ["Edita la imagen con las siguientes características:"];
     
     if (editOptions.style) {
-        promptParts.push(`Aplica un estilo ${editOptions.style.toLowerCase()}.`);
+        promptParts.push(`Estilo: '${editOptions.style}'.`);
     }
     if (editOptions.lighting) {
-        promptParts.push(`Usa iluminación ${editOptions.lighting.toLowerCase()}.`);
+        promptParts.push(`Iluminación: '${editOptions.lighting}'.`);
     }
     if (editOptions.composition) {
-        promptParts.push(`Ajusta la composición a ${editOptions.composition.toLowerCase()}.`);
+        promptParts.push(`Composición: '${editOptions.composition}'.`);
     }
 
     if (customPrompt) {
-        promptParts.push(customPrompt);
+        promptParts.push(`Instrucción adicional: ${customPrompt}`);
     }
 
-    if (promptParts.length === 0) {
+    if (promptParts.length === 1) { // Only the initial instruction
         throw new Error("No se proporcionaron instrucciones de edición. Por favor, selecciona una opción o escribe un prompt.");
     }
     
